@@ -57,12 +57,10 @@ public class MainPage extends javax.swing.JFrame {
             tableModel.getDataVector().removeAllElements();
             tableModel.fireTableDataChanged();
             tableModel.setRowCount(0);
-            
-            int number = 1;
 
             while (resultSet.next()) {
                 Object[] data = {
-                    number++,
+                    resultSet.getString("id"),
                     resultSet.getString("nim"),
                     resultSet.getString("nama"),
                     resultSet.getString("program_studi"),
@@ -375,6 +373,7 @@ public class MainPage extends javax.swing.JFrame {
                 "NIM", "Nama", "Program Studi", "Jenis Kelamin", "Alamat"
             }
         ));
+        table_data.setRowHeight(28);
         table_data.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 table_dataMouseClicked(evt);
@@ -466,7 +465,7 @@ public class MainPage extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
+                        .addGap(33, 33, 33)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
