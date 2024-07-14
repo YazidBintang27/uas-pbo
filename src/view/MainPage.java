@@ -74,6 +74,44 @@ public class MainPage extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+    
+    private void searchData() {
+        try {
+            statement = connection.createStatement();
+            String querySearch = "SELECT * FROM data_mahasiswa WHERE nama LIKE ?";
+            PreparedStatement statementSearch = connection.prepareStatement(querySearch);
+            statementSearch.setString(1, field_cari.getText() + "%");
+        
+            resultSet = statementSearch.executeQuery();
+
+            DefaultTableModel tableModel = new DefaultTableModel();
+            tableModel.addColumn("No");
+            tableModel.addColumn("NIM");
+            tableModel.addColumn("Nama");
+            tableModel.addColumn("Program Studi");
+            tableModel.addColumn("Jenis Kelamin");
+            tableModel.addColumn("Alamat");
+
+            tableModel.getDataVector().removeAllElements();
+            tableModel.fireTableDataChanged();
+            tableModel.setRowCount(0);
+
+            while (resultSet.next()) {
+                Object[] data = {
+                    resultSet.getString("id"),
+                    resultSet.getString("nim"),
+                    resultSet.getString("nama"),
+                    resultSet.getString("program_studi"),
+                    resultSet.getString("jenis_kelamin"),
+                    resultSet.getString("alamat")
+                };
+                tableModel.addRow(data);
+                table_data.setModel(tableModel);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -87,6 +125,8 @@ public class MainPage extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        field_cari = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -126,21 +166,47 @@ public class MainPage extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Data Mahasiswa Fakultas Teknik");
 
+        field_cari.setBackground(new java.awt.Color(255, 255, 255));
+        field_cari.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
+        field_cari.setForeground(new java.awt.Color(51, 51, 51));
+        field_cari.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 5, true));
+        field_cari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                field_cariKeyPressed(evt);
+            }
+        });
+
+        jLabel13.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel13.setFont(new java.awt.Font("Poppins SemiBold", 0, 12)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel13.setText("Cari Nama ");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(jLabel3)
-                .addContainerGap(451, Short.MAX_VALUE))
+                .addGap(96, 96, 96)
+                .addComponent(jLabel13)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(field_cari, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(172, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(41, Short.MAX_VALUE)
+                .addGap(21, 21, 21)
                 .addComponent(jLabel3)
-                .addGap(39, 39, 39))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(field_cari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(120, 139, 255));
@@ -624,6 +690,11 @@ public class MainPage extends javax.swing.JFrame {
         field_nim.setEditable(true);
     }//GEN-LAST:event_btn_clearActionPerformed
 
+    private void field_cariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_cariKeyPressed
+        if (field_cari.getText().isEmpty()) showData();
+        else searchData();
+    }//GEN-LAST:event_field_cariKeyPressed
+
 
     /**
      * @param args the command line arguments
@@ -668,12 +739,14 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JButton btn_hapus;
     private javax.swing.JButton btn_tambah;
     private javax.swing.JButton btn_update;
+    private javax.swing.JTextField field_cari;
     private javax.swing.JTextField field_nama;
     private javax.swing.JTextField field_nim;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
